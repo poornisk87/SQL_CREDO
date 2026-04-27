@@ -1,0 +1,88 @@
+CREATE TABLE if not exists 
+students_new  ( 
+	student_id INT, 
+	student_name VARCHAR(50),
+	age INT, 
+	marks INT ); 
+
+
+	INSERT INTO students_new VALUES 
+	(1, 'Amit', 18, 85), 
+	(2, 'Neha', 19, 90), 
+	(3, 'Rahul', 18, 60),
+	(4, 'Simran', 20, 95), 
+	(5, 'Divya', 19, 55); 
+
+Q1. Select all columns from the students table. 
+ select * from students_new;
+Q2.Find students with marks greater than 80. 
+  select * from students_new
+  where marks > 80
+Q3.Sort students by marks in descending order.
+	select * from students_new
+	order by marks desc
+Q4. Count how many students are there. 
+select count(student_id) as Total_Students
+from students_new
+Q5. Get the highest marks from the table. 
+select max(marks) as Maximum_mark
+from students_new
+Q6. Select only unique ages. 
+select distinct age
+from students_new
+order by 1
+Q7. Show names of students aged between 18 and 19. 
+select student_name,age
+from students_new
+where age between 18 and 19
+order by age
+Q8. Find students whose names start with 'S'. 
+select student_name
+from students_new
+where student_name like 'S%'
+Q9. Get the average marks grouped by age. 
+select round(avg(marks),2),age
+from students_new 
+group by age
+Q10. Filter groups where average marks > 70. 
+select round(avg(marks),2) as average_marks
+from students_new
+group by marks
+having avg(marks)>70
+Q11. Select top 2 scoring students. 
+select * 
+from students_new
+order by marks desc
+limit 2
+Q12. Find students with no marks below 60.
+select * 
+from students_new
+where marks = null or marks<60
+Q13. Update Rahul’s marks to 75. 
+update students_new
+set marks = marks+15
+where student_name = 'Rahul'
+
+update students_new
+set marks = 76
+where student_name = 'Rahul'
+Q14. Delete students with marks < 60. 
+delete from students_new where marks < 60;
+Q15. Select students who are NOT 19 years old. 
+select *
+from students_new 
+where age <> 19 
+Q16. Subquery – Get students with above average marks. 
+select * 
+from students_new
+where marks > (select avg(marks) from students_new)
+Q17. Which clause is used to filter before aggregation? 
+where
+Q18. How to rename column in output? 
+using alias a
+Q19. What is the result of: SELECT COUNT(DISTINCT age) FROM students; 
+lists count of unique age
+Q20. Find names of students whose names end with 'a'
+select * 
+from students_new
+where student_name like '%a'

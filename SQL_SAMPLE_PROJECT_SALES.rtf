@@ -1,0 +1,193 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset134 STSongti-SC-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww25400\viewh15440\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 CREATE TABLE customers (\
+customer_id INT PRIMARY KEY,\
+name VARCHAR(50),\
+city VARCHAR(50)\
+);\
+\
+CREATE TABLE orders (\
+    order_id INT PRIMARY KEY,\
+    customer_id INT,\
+    order_date DATE,\
+    total_amount INT,\
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\
+);\
+\
+CREATE TABLE products (\
+product_id VARCHAR(10) PRIMARY KEY,\
+name VARCHAR(50),\
+category VARCHAR(50),\
+price INT\
+);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 INSERT INTO customers VALUES\
+(1, 'Rajesh', 'Chennai'),\
+(2, 'Priya', 'Mumbai'),\
+(3, 'Arjun', 'Delhi'),\
+(4, 'Sneha', 'Chennai');\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+INSERT INTO orders VALUES\
+(101, 1, '2025-01-10', 2500),\
+(102, 2, '2025-01-12', 4000),\
+(103, 3, '2025-01-15', 1500),\
+(104, 1, '2025-02-05', 3200),\
+(105, 4, '2025-02-20', 1800),\
+(106, 2, '2025-03-01', 220;\
+\
+INSERT INTO products VALUES\
+('P01', 'Laptop', 'Electronics', 70000),\
+('P02', 'Phone', 'Electronics', 30000);\
+\
+Q3. Update a customer\'92s city to \'93Hyderabad\'94. \
+UPDATE customers\
+SET city = 'Hyderabad'\
+WHERE customer_id = 3;\
+\
+Q4. Delete orders where total_amount < 2000. \
+\pard\pardeftab720\partightenfactor0
+\cf0 DELETE FROM orders\
+WHERE total_amount < 2000;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 Q5. Display all customer names and cities. \
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 SELECT name, city FROM customers;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 Q6. Show all orders placed in February 2025. \
+\pard\pardeftab720\partightenfactor0
+\cf0 SELECT *\
+FROM orders\
+WHERE order_date BETWEEN '2025-02-01' AND '2025-02-28';\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 Q7. Find all customers from Chennai\
+\pard\pardeftab720\partightenfactor0
+\cf0 SELECT *\
+FROM customers\
+WHERE city = 'Chennai';\
+\
+Q8. Retrieve all orders where total_amount is between 2000 and 4000. \
+SELECT *\
+FROM orders\
+WHERE total_amount BETWEEN 2000 AND 4000;\
+\
+Q9. Display all customers whose names start with \'93P\'94. \
+SELECT *\
+FROM customers\
+WHERE name LIKE 'P%';\
+\
+Q10. Find customers who live in Mumbai or Delhi. \
+SELECT *\
+FROM customers\
+WHERE city IN ('Mumbai','Delhi');\
+\
+Q11. Show orders sorted by order_date (most recent first). \
+SELECT *\
+FROM orders\
+ORDER BY order_date DESC;\
+\
+Q12. Display customers sorted alphabetically by name.\
+SELECT *\
+FROM customers\
+ORDER BY name ASC;\
+\
+Q13. Find total sales per customer. \
+SELECT customer_id, SUM(total_amount) AS total_sales\
+FROM orders\
+GROUP BY customer_id;\
+\
+Q14. Find total sales per city. \
+SELECT c.city, SUM(o.total_amount) AS total_sales\
+FROM customers c\
+JOIN orders o ON c.customer_id = o.customer_id\
+GROUP BY c.city;\
+\
+Q15. Find average, minimum, and maximum order amount across all orders. \
+SELECT \
+AVG(total_amount),\
+MIN(total_amount),\
+MAX(total_amount)\
+FROM orders;\
+\
+Q16. Find customers whose total purchase value is greater than 
+\f1 \uc0\u8377 
+\f0 3000. \
+SELECT customer_id, SUM(total_amount) AS total\
+FROM orders\
+GROUP BY customer_id\
+HAVING SUM(total_amount) > 3000;\
+\
+Q17. Find cities with total sales greater than 
+\f1 \uc0\u8377 
+\f0 5000. \
+SELECT c.city, SUM(o.total_amount) AS total\
+FROM customers c\
+JOIN orders o ON c.customer_id = o.customer_id\
+GROUP BY c.city\
+HAVING SUM(o.total_amount) > 5000;\
+\
+Q18. Display each order along with the customer name and city. \
+SELECT o.order_id, c.name, c.city\
+FROM orders o\
+JOIN customers c ON o.customer_id = c.customer_id;\
+\
+Q19. Find customers who have not placed any orders. \
+SELECT c.*\
+FROM customers c\
+LEFT JOIN orders o ON c.customer_id = o.customer_id\
+WHERE o.order_id IS NULL;\
+\
+Q20. Join orders and products to display order_id, product name, price (assume order_products table links them). \
+SELECT o.order_id, p.name, p.price\
+FROM orders o\
+JOIN order_products op ON o.order_id = op.order_id\
+JOIN products p ON op.product_id = p.product_id;\
+\
+Q21. Show each city\'92s total revenue and number of unique customers. \
+SELECT c.city,\
+SUM(o.total_amount) AS total_revenue,\
+COUNT(DISTINCT c.customer_id) AS unique_customers\
+FROM customers c\
+JOIN orders o ON c.customer_id = o.customer_id\
+GROUP BY c.city;\
+\
+Q22. Find the top 3 customers by total order value. \
+SELECT c.name, SUM(o.total_amount) AS total\
+FROM customers c\
+JOIN orders o ON c.customer_id = o.customer_id\
+GROUP BY c.name\
+ORDER BY total DESC\
+LIMIT 3;\
+\
+Q23. Rank customers by total purchase amount. \
+SELECT c.name,\
+SUM(o.total_amount) AS total,\
+RANK() OVER (ORDER BY SUM(o.total_amount) DESC) AS rank\
+FROM customers c\
+JOIN orders o ON c.customer_id = o.customer_id\
+GROUP BY c.name;\
+\
+Q24. Calculate a running total of sales ordered by date. \
+SELECT order_date,\
+SUM(total_amount) OVER (ORDER BY order_date) AS running_total\
+FROM orders;\
+Q25. Find the monthly average order amount and show each order\'92s deviation from that average.\
+SELECT \
+DATE_TRUNC('month', order_date) AS month,\
+SUM(total_amount) AS monthly_sales\
+FROM orders\
+GROUP BY month\
+ORDER BY month;\
+}
